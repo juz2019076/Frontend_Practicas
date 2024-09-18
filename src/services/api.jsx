@@ -7,18 +7,39 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-        const userDetails = localStorage.getItem('user')
+        const userDetails = localStorage.getItem('user');
 
         if (userDetails) {
-            const token = JSON.parse(userDetails).token
-            config.headers.Authorization = `Bearer ${token}`
+            const token = JSON.parse(userDetails).token;
+            config.headers.Authorization = `${token}`; 
         }
-        return config
+        return config;
     },
-    (e) => {
-        return Promise.reject(e)
+    (error) => {
+        return Promise.reject(error);
     }
-)
+);
+
+apiClient.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        if (error.response && error.response.data && error.response.data.token) {
+            console.log('Nuevo token recibido:', error.response.data.token); 
+
+            try {
+                localStorage.setItem('user', JSON.stringify({ token: error.response.data.token }));
+                console.log('Token guardado en localStorage');
+            } catch (e) {
+                console.error('Error al guardar el token en localStorage:', e);
+            }
+        } else {
+            console.log('No se recibió un token en la respuesta de error');
+        }
+        return Promise.reject(error);
+    }
+);
 
 export const login = async (data) => {
     try {
