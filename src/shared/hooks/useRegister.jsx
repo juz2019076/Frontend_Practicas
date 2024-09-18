@@ -1,45 +1,25 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { register as registerRequest } from '../../services/api';
-import toast from 'react-hot-toast';
 
 export const useRegister = () => {
-    const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
 
-    const navigate = useNavigate();
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
 
-    const register = async (username, email, password) => {
-        setIsLoading(true);
-
-        const response = await registerRequest({
-            username,
-            email,
-            password
-        });
-
-        setIsLoading(false);
-        if (response.error) {
-            return toast.error(
-                response.e?.response?.data || 'Error al iniciar sesión'
-            );
-        }
-
-        const { user } = response.data;
-        console.log(user, "alñksdjfalkdf")
-        if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-        }else {
-            localStorage.removeItem('user');
-        }
-
-        navigate('/')
-
+  const handleFileSubmit = (e) => {
+    e.preventDefault();
+    if (file) {
+      console.log('Archivo subido:', file);
+      // Aquí puedes agregar la lógica para enviar el archivo a un servidor
+    } else {
+      alert('Por favor selecciona un archivo.');
     }
+  };
 
-    return {
-
-        register,
-        isLoading
-        
-    }
-}
+  return {
+    handleFileChange,
+    handleFileSubmit,
+    file,
+  };
+};

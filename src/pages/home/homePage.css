@@ -1,0 +1,19 @@
+/* Contenedor principal de la HomePage */
+.homepage-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #f4f4f442;
+    background-image: url('/src/assets/img/fondo.jpeg');
+    min-height: calc(100vh - 70px); /* Ajusta la altura según el tamaño del navbar */
+}
+
+/* Estilo del contenido del dashboard */
+.dashboard-content {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffffff25;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos adicionales si necesitas */
