@@ -54,14 +54,18 @@ export const login = async (data) => {
     }
 }
 
-export const register = async (data) => {
+
+export const uploadFile = async (fileData) => {
     try {
-        console.log({data})
-        return await apiClient.post('/user/register', data)
+        return await apiClient.post('/upload', fileData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
     } catch (e) {
         return {
             error: true,
-            e
-        }
+            e,
+        };
     }
-}
+};
