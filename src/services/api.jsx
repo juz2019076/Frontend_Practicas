@@ -1,46 +1,14 @@
-import axios from 'axios';
+// src/services/api.jsx
 
-const apiClient = axios.create({
-    baseURL: 'http://127.0.0.1:3000/techlogix/v1',
-    timeout: 5000
-})
+const API_URL = 'https://api.example.com'; // Reemplaza con tu API real
 
-apiClient.interceptors.request.use(
-    (config) => {
-        const userDetails = localStorage.getItem('user')
-
-        if (userDetails) {
-            const token = JSON.parse(userDetails).token
-            config.headers.Authorization = `Bearer ${token}`
-        }
-        return config
-    },
-    (e) => {
-        return Promise.reject(e)
-    }
-)
-
-export const login = async (data) => {
+export const fetchRecords = async () => {
     try {
-        console.log({data})
-        return await apiClient.post('/auth/login', data)
-        
-    } catch (e) {
-        return {
-            error: true,
-            e
-        }
+        const response = await fetch(`${API_URL}/records`);
+        if (!response.ok) throw new Error('Error fetching records');
+        return response.json();
+    } catch (error) {
+        console.error('API fetch error:', error);
+        throw error;
     }
-}
-
-export const register = async (data) => {
-    try {
-        console.log({data})
-        return await apiClient.post('/user/register', data)
-    } catch (e) {
-        return {
-            error: true,
-            e
-        }
-    }
-}
+};

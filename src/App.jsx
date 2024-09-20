@@ -1,15 +1,16 @@
-import { useRoutes } from "react-router-dom"
-import { Toaster } from "react-hot-toast"
-import routes from "./routes.jsx"
+// App.jsx
+import { useRoutes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import routes from "./routes.jsx";  // Aquí es correcto
 
 export const App = () => {
-  let element = useRoutes(routes);
+  let element = useRoutes(routes); // Aquí también está bien
   return (
     <>
       {element}
-      <Toaster position="botton-right" reverseOrder={false}/>
+      <Toaster position="bottom-right" reverseOrder={false} />
     </>
   );
 };
 
-export default App
+export default App;

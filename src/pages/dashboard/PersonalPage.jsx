@@ -3,10 +3,10 @@ import './dashboardPage.css';  // Importar los estilos
 import buttonImage1 from '/src/assets/img/filtros.png';  
 import buttonImage2 from '/src/assets/img/checkform.png';  
 import buttonImage3 from '/src/assets/img/historial.png';  
-import employeeImage from '/src/assets/img/Empresas.png';  
+import employeeImage from '/src/assets/img/empleado-del-mes.png';  
 import techlogixLogo from '/src/assets/img/techlogix.png';  
 
-export const DashboardPage = () => {
+export const PersonalPage = () => {
   return (
     <div className="dashboard">
       {/* Header */}
@@ -29,12 +29,12 @@ export const DashboardPage = () => {
           <div className="employees-section">
             <div className="employees-icon">
               <img src={employeeImage} alt="Empleados" />
-              <h2>EMPRESAS</h2>
+              <h2>PERSONALES</h2>
             </div>
 
             {/* Detalles de empleados con campos de entrada */}
             <div className="employee-details">
-              {['ID DE EMPLEADO', 'CÓDIGO PERSONAL', 'Fecha de Contratación', 'Fecha de Cargo', 'CARGO', 'SUELDO', 'RESPONSABILIDADES', 'PERSONAL DE CARGO', 'JEFE INMEDIATO', 'ESTADO', 'FECHA DE REGISTRO', 'ID_EMPLEADO'].map((field, index) => (
+              {['primer_nombre', 'segundo_nombre', 'tercer_nombre', 'primer_apellido', 'segundo_apellido', 'apellido_de_casada', 'fecha_de_nac', 'lugar_de_nac', 'direccion_domicilio', 'numero_celular', 'numero_casa', 'correo_electronico', 'action'].map((field, index) => (
                 <div className="employee-field" key={index}>
                   <label>{field}</label>
                   <input type="text" placeholder={` ${field}`} readOnly />

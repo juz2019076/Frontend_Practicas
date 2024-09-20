@@ -1,12 +1,12 @@
 import React from 'react';
-import './dashboardPage.css';  // Importar los estilos
+import './dashboardPage.css';  // Usando los mismos estilos
 import buttonImage1 from '/src/assets/img/filtros.png';  
 import buttonImage2 from '/src/assets/img/checkform.png';  
 import buttonImage3 from '/src/assets/img/historial.png';  
-import employeeImage from '/src/assets/img/Empresas.png';  
+import employeeImage from '/src/assets/img/Practicantes.png';  
 import techlogixLogo from '/src/assets/img/techlogix.png';  
 
-export const DashboardPage = () => {
+export const PracticantesPage = () => {
   return (
     <div className="dashboard">
       {/* Header */}
@@ -28,13 +28,13 @@ export const DashboardPage = () => {
         <div className="content-box">
           <div className="employees-section">
             <div className="employees-icon">
-              <img src={employeeImage} alt="Empleados" />
-              <h2>EMPRESAS</h2>
+              <img src={employeeImage} alt="Practicantes" />
+              <h2>PRACTICANTES</h2>
             </div>
 
-            {/* Detalles de empleados con campos de entrada */}
+            {/* Detalles de practicantes con campos de entrada */}
             <div className="employee-details">
-              {['ID DE EMPLEADO', 'CÓDIGO PERSONAL', 'Fecha de Contratación', 'Fecha de Cargo', 'CARGO', 'SUELDO', 'RESPONSABILIDADES', 'PERSONAL DE CARGO', 'JEFE INMEDIATO', 'ESTADO', 'FECHA DE REGISTRO', 'ID_EMPLEADO'].map((field, index) => (
+              {['ID DE PRACTICANTE', 'Institucion_Colegio', 'Grado', 'Carrera', 'Habilidades', 'Número_De_Horas', 'Fecha_De_inicio', 'Fecha_De_Finalización', 'Referido', 'Estado','Action'].map((field, index) => (
                 <div className="employee-field" key={index}>
                   <label>{field}</label>
                   <input type="text" placeholder={` ${field}`} readOnly />
