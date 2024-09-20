@@ -1,21 +1,16 @@
-import { PersonalPage } from './pages/dashboard/PersonalPage';
-import { DashboardPage } from './pages/dashboard/DashboardPage';
-import { PracticantesPage } from './pages/dashboard/PracticantesPage';  // Importar la nueva vista
+import { PersonalPage } from './pages/vistas/PersonalPage';
+import { PracticantesPage } from './pages/vistas/PracticantesPage';
+import { Home } from "./pages/home/Home.jsx"
+import { AuthPage } from "./pages/auth";
+import Register from "./components/Register";
+
 
 const routes = [
-  {
-    path: '/dashboard',
-    element: <DashboardPage />,
-  },
-  {
-    path: '/practicantes',  // Nueva ruta
-    element: <PracticantesPage />,  // Componente de la nueva vista
-  },
-  {
-    path: '/personal',  // Nueva ruta
-    element: <PersonalPage />,  // Componente de la nueva vista
-  },
-  // otras rutas
-];
+  { path: '/', element: <AuthPage /> },
+  { path: '/register', element: <Register /> },
+  { path: "/home", element: <Home /> },
+  { path: '/practicantes',element: <PracticantesPage />},
+  { path: '/personal',  element: <PersonalPage />},
+]
 
 export default routes;

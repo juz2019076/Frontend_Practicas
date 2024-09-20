@@ -1,0 +1,130 @@
+/* authPage.css */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif; /* Fuente general */
+}
+
+/* Contenedor principal centrado */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('/src/assets/img/fondo.jpeg'); /* Imagen de fondo azul oscuro */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Caja del login */
+.login-box {
+  background-color: rgba(252, 251, 251, 0.082); /* Fondo semi-sólido */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.3); /* Sombra sutil */
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenedor para la imagen y el formulario */
+.login-content {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: space-between; 
+  width: 100%; 
+}
+
+/* Estilo para el logo */
+.login-logo {
+  max-width: 200px; /* Ajusta el tamaño del logo */
+  margin-right: 20px; /* Separación entre el logo y el texto */
+  object-fit: contain; /* Asegura que la imagen mantenga su proporción */
+}
+
+/* Estilos para el contenido de la derecha (inputs, títulos) */
+.login-right {
+  max-width: 400px;
+  width: 100%;
+  text-align: left; /* Alinea el contenido a la izquierda */
+}
+
+/* Título del login */
+.login-box-title h1 {
+  color: rgb(0, 0, 0); /* Texto blanco */
+  font-size: 1.5em; /* Tamaño del título */
+  margin-bottom: 20px;
+}
+
+/* Grupo de inputs */
+.input-group {
+  margin-bottom: 20px;
+}
+
+/* Estilo para los labels de los inputs */
+.input-group label {
+  color: #d8d8d8; /* Color celeste claro para los labels */
+  font-size: 1.1em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Estilo para los inputs */
+.input-group input {
+  background-color: #e6e8e9; /* Fondo claro */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px; /* Espaciado interno */
+  font-size: 0.9em; /* Tamaño de fuente más pequeño */
+  width: 100%; /* Ocupa todo el ancho */
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  outline: none; /* Sin contorno al hacer clic */
+}
+
+/* Estilo para el botón de submit */
+.submit {
+  background-color: #eef2f7; /* Color gris azulado del botón */
+  color: rgb(5, 197, 255); /* Texto blanco */
+  padding: 10px 20px; /* Espaciado interno */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar el cursor a pointer */
+  font-size: 1.1em; /* Tamaño de fuente */
+  width: 100%; /* Ancho completo */
+}
+
+/* Botón deshabilitado */
+.submit:disabled {
+  background-color: #002e46; /* Color gris para el botón deshabilitado */
+}
+
+/* Estilo del error de validación */
+.input-error {
+  color: red;
+  font-size: 0.8em;
+  margin-top: -5px;
+}
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 600px) {
+  .login-box {
+      padding: 20px;
+      width: 90%;
+      flex-direction: column; /* Apila los elementos verticalmente en pantallas pequeñas */
+  }
+
+  .login-logo {
+      margin-right: 0;
+      margin-bottom: 20px;
+  }
+
+  .submit {
+      padding: 10px;
+      font-size: 1em;
+  }
+}
