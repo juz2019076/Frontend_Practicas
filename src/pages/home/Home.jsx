@@ -2,6 +2,7 @@ import React from 'react';
 import { NavBarComp } from '../../components/navbars/Navbar';
 import { HeaderComp } from '../../components/navbars/Header';
 import './homeStyle.css'
+import { Footer } from '../../components/complements/Footer';
 
 export const Home = () => {
     return (
@@ -19,6 +20,7 @@ export const Home = () => {
 
                 </div>
             </div>
+            <Footer/>
         </div>
     );
 };

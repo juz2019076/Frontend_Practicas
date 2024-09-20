@@ -10,7 +10,7 @@ export const NavBarComp = () => {
     <nav className="nav-bar">
       <ul>
         <li><a href="/home">Home</a></li>
-        <li><a href="/ingresar">Ingresar</a></li>
+        <li><a href="/register">Ingresar</a></li>
 
         <li className="dropdown">
           <button onClick={toggleDropdown} className="dropbtn">Tablas</button>

@@ -6,9 +6,9 @@
     height: 100vh;
     background-image: url('/src/assets/img/fondo.jpeg');
     background-size: cover;
-    background-position: center; /* Asegúrate de que el fondo esté centrado */
-    padding-top: 70px; /* Ajusta según la altura del header y navbar */
-    box-sizing: border-box; /* Incluye padding en el cálculo del ancho y alto */
+    background-position: center; 
+    padding-top: 70px; 
+    box-sizing: border-box; 
   }
   
   .welcome-message {

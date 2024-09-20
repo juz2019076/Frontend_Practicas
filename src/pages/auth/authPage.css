@@ -19,7 +19,7 @@ body, html {
 
 /* Caja del login */
 .login-box {
-  background-color: rgba(255, 255, 255, 0.082); /* Fondo semi-sólido */
+  background-color: rgba(252, 251, 251, 0.082); /* Fondo semi-sólido */
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.3); /* Sombra sutil */
@@ -55,7 +55,7 @@ body, html {
 
 /* Título del login */
 .login-box-title h1 {
-  color: rgb(33, 0, 151); /* Texto blanco */
+  color: rgb(0, 0, 0); /* Texto blanco */
   font-size: 1.5em; /* Tamaño del título */
   margin-bottom: 20px;
 }
@@ -67,7 +67,7 @@ body, html {
 
 /* Estilo para los labels de los inputs */
 .input-group label {
-  color: #218bbd; /* Color celeste claro para los labels */
+  color: #d8d8d8; /* Color celeste claro para los labels */
   font-size: 1.1em;
   display: block;
   margin-bottom: 5px;
@@ -75,7 +75,7 @@ body, html {
 
 /* Estilo para los inputs */
 .input-group input {
-  background-color: #08e2ff; /* Fondo claro */
+  background-color: #e6e8e9; /* Fondo claro */
   border: none; /* Sin borde */
   border-radius: 5px; /* Bordes redondeados */
   padding: 10px; /* Espaciado interno */
@@ -88,7 +88,7 @@ body, html {
 
 /* Estilo para el botón de submit */
 .submit {
-  background-color: #4a647d; /* Color gris azulado del botón */
+  background-color: #eef2f7; /* Color gris azulado del botón */
   color: rgb(5, 197, 255); /* Texto blanco */
   padding: 10px 20px; /* Espaciado interno */
   border: none; /* Sin borde */
