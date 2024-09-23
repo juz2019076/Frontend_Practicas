@@ -1,4 +1,5 @@
 // src/services/api.jsx
+import axios from 'axios';
 
 const apiClient = axios.create({
     baseURL: 'http://127.0.0.1:3000/v1',
@@ -69,3 +70,17 @@ export const uploadFile = async (fileData) => {
         };
     }
 };
+
+export const getPersonales = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/personal', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+}

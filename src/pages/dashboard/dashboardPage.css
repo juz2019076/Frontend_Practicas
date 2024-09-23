@@ -2,8 +2,8 @@
 .dashboard {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Altura completa de la ventana */
-    width: 100vw; /* Ancho completo de la ventana */
+    height: auto; /* Altura completa de la ventana */
+    width: auto; /* Ancho completo de la ventana */
     margin: 0; /* Eliminar márgenes */
     padding: 0; /* Eliminar relleno */
     background-image: url('/src/assets/img/fondo.jpeg');
@@ -52,14 +52,17 @@
 }
 
 .content-box {
-    width: 65%; /* Cambiar a 100% para llenar el espacio */
-    max-width: 1200px; /* Ancho máximo para evitar que se expanda demasiado */
+    width: 50%;
+    max-width: 1200px;
     background-color: rgba(255, 255, 255, 0.2);
     padding: 50px;
     border-radius: 50px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrar elementos verticalmente */
+    align-items: center;
+    margin: 0 auto; /* Centra horizontalmente */
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .employees-section {
@@ -147,4 +150,42 @@
     height: 10px; /* Aumentar la altura del borde */
     background-color: gray; /* Color del borde */
     margin-top: 20px; /* Separación de los botones */
+}
+
+.search-and-order {
+    display: flex; /* Para alinear el input y los botones en fila */
+    align-items: center; /* Centrar verticalmente */
+    gap: 10px; /* Espacio entre el input y los botones */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.search-input {
+    width: 60%; /* Ancho del campo de búsqueda */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.order-buttons {
+    display: flex; /* Para colocar los botones uno al lado del otro */
+    gap: 5px; /* Espacio entre los botones */
+}
+
+.order-buttons button {
+    background-color: #007bff; /* Color del botón */
+    color: white; /* Color del texto del botón */
+    border: none;
+    border-radius: 5px; /* Bordes curvados del botón */
+    padding: 5px 8px; /* Espaciado pequeño */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transición suave */
+    font-size: 12px; /* Tamaño de fuente más pequeño */
+}
+
+.order-buttons button:hover {
+    background-color: #0056b3; /* Color al pasar el ratón */
+}
+
+.order-buttons .icon {
+    margin-right: 5px; /* Espacio entre el ícono y el texto */
 }
