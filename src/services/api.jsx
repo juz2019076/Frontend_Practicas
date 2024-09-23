@@ -98,3 +98,17 @@ export const getPracticas = async ({ orden, campo }) => {
         };
     }
 };
+
+export const getEmpresas = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/empresa', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
