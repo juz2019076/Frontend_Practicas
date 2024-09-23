@@ -84,3 +84,17 @@ export const getPersonales = async ({ orden, campo }) => {
         };
     }
 }
+
+export const getPracticas = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/practica', {
+            params: { orden, campo },
+        });
+        return response.data;
+    } catch (error) {
+        return {
+            error: true,
+            e: error,
+        };
+    }
+};
