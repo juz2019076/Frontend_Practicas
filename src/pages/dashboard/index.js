@@ -1,3 +1,6 @@
 export { DashboardPage } from './DashboardPage'
 export {PracticantesPage} from './PracticantesPage'
 export {EmpresasPage} from './PersonalPage'
+export {RegistrosPage}from './RegistrosPage'
+export {LoginPage} from './LoginPage'
+export {UpdatePage} from './UpdatePage'
