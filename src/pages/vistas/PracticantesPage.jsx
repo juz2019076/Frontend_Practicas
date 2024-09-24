@@ -109,6 +109,7 @@ export const PracticantesPage = () => {
                   </div>
                 </div>
 
+                <div className="scrollable-list">
                 <ul className="employee-list">
                   {filteredPracticas.length > 0 ? (
                     filteredPracticas.map((practica) => (
@@ -122,6 +123,7 @@ export const PracticantesPage = () => {
                     <li>No se encontraron resultados</li>
                   )}
                 </ul>
+                </div>
               </>
             )}
           </Modal>

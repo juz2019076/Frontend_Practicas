@@ -113,6 +113,7 @@ export const PersonalPage = () => {
                   </div>
                 </div>
 
+                <div className="scrollable-list">
                 <ul className="employee-list">
                   {filteredPersonales.length > 0 ? (
                     filteredPersonales.map((personal) => (
@@ -126,6 +127,7 @@ export const PersonalPage = () => {
                     <li>No se encontraron resultados</li>
                   )}
                 </ul>
+                </div>
               </>
             )}
           </Modal>

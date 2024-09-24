@@ -12,7 +12,7 @@ apiClient.interceptors.request.use(
 
         if (userDetails) {
             const token = JSON.parse(userDetails).token;
-            config.headers.Authorization = `${token}`; 
+            config.headers.Authorization = `${token}`;
         }
         return config;
     },
@@ -27,7 +27,7 @@ apiClient.interceptors.response.use(
     },
     (error) => {
         if (error.response && error.response.data && error.response.data.token) {
-            console.log('Nuevo token recibido:', error.response.data.token); 
+            console.log('Nuevo token recibido:', error.response.data.token);
 
             try {
                 localStorage.setItem('user', JSON.stringify({ token: error.response.data.token }));
@@ -44,9 +44,9 @@ apiClient.interceptors.response.use(
 
 export const login = async (data) => {
     try {
-        console.log({data})
+        console.log({ data })
         return await apiClient.post('/usuarios/login', data)
-        
+
     } catch (e) {
         return {
             error: true,
@@ -102,6 +102,48 @@ export const getPracticas = async ({ orden, campo }) => {
 export const getEmpresas = async ({ orden, campo }) => {
     try {
         const response = await apiClient.get('/empresa', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getRegistros = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/registro', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getUpdates = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/logUpdate', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const getLogins = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/usuarios/log', {
             params: { orden, campo }
         });
         return response;
