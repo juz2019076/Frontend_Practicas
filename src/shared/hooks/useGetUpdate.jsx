@@ -7,8 +7,8 @@ const formatDate = (dateString) => {
     if (isNaN(date.getTime())) {
         return 'Fecha Inválida';
     }
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString('es-ES', options);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    return date.toLocaleString('es-ES', options);
 };
 
 export const useGetUpdate = ({ orden = 'desc', campo = 'Nombre_Tabla' }) => {

@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { getRegistros } from '../../services/api';
 
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-        return 'Fecha Inválida'; 
+        return 'Fecha Inválida';
     }
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    return date.toLocaleDateString('es-ES', options);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    return date.toLocaleString('es-ES', options);
 };
+
 export const useGetRegistros = ({ orden, campo }) => {
     const [registros, setRegistros] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
@@ -20,7 +22,6 @@ export const useGetRegistros = ({ orden, campo }) => {
             setIsFetching(true);
             const response = await getRegistros({ orden, campo });
 
-            console.log('Respuesta de la API:', response);
 
             if (response.error) {
                 throw new Error(response.e?.message || 'Error en la solicitud');
@@ -30,12 +31,13 @@ export const useGetRegistros = ({ orden, campo }) => {
             const registrosObtenidos = data?.registro || [];
 
             const registrosFormateados = registrosObtenidos.map(registro => {
-                console.log('Fecha original:', registro.fecha_creacion); 
                 return {
                     ...registro,
-                    fecha_creacion: formatDate(registro.fecha_creacion)
+                    fecha_creacion: formatDate(registro.fecha_creacion),
+                    Fecha_de_Registro: formatDate(registro.data.map(d => d.Fecha_de_Registro).join(', '))
                 };
             });
+
 
             setRegistros(registrosFormateados);
             toast.success('Datos cargados exitosamente');

@@ -14,7 +14,7 @@ const highlightMatch = (text, term) => {
   if (!term) return text;
   const regex = new RegExp(`(${term})`, 'gi');
   return text.split(regex).map((part, index) =>
-      regex.test(part) ? <strong key={index}>{part}</strong> : part
+    regex.test(part) ? <strong key={index}>{part}</strong> : part
   );
 };
 
@@ -24,6 +24,7 @@ export const RegistrosPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = useState('asc');
   const [selectedRegistro, setSelectedRegistro] = useState(null);
+  const [isDataExpanded, setIsDataExpanded] = useState(null); 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
 
@@ -39,11 +40,17 @@ export const RegistrosPage = () => {
 
   const handleSelect = (registro) => {
     setSelectedRegistro(registro);
+    console.log("Registro seleccionado:", registro);
     setIsModalOpen(false);
   };
 
+  const toggleDataSection = (index) => {
+    setIsDataExpanded(isDataExpanded === index ? null : index);
+  };
+
+
   const filteredRegistros = registros.filter((registro) =>
-  `${registro.file} ${registro.fecha_creacion}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${registro.file} ${new Date(registro.fecha_creacion).toLocaleString()}${registro.data.map(d => d.Operacion).join(', ')}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   return (
@@ -59,12 +66,46 @@ export const RegistrosPage = () => {
           </div>
         </div>
 
-        {selectedRegistro && (
-          <div className="json-display">
-            <h3>Detalles del Registro Seleccionado</h3>
-            <pre>{JSON.stringify(selectedRegistro, null, 2)}</pre>
-          </div>
-        )}
+        <div className="registro-info">
+          {selectedRegistro ? (
+            <>
+              <div><span className="detalle-label">ID:</span> {selectedRegistro._id}</div>
+              <div><span className="detalle-label">Fecha de creación:</span> {selectedRegistro.fecha_creacion}</div>
+              <strong>Detalles:</strong>
+              {selectedRegistro.data && selectedRegistro.data.length > 0 ? (
+                selectedRegistro.data.map((detalle, index) => (
+                  <div key={index}>
+                    <button className="toggle-button" onClick={() => toggleDataSection(index)}>
+                      <strong>{isDataExpanded === index ? '▲' : '▼'} Detalle {index + 1}</strong>
+                    </button>
+                    {isDataExpanded === index && (
+                      <div className="detalle-content">
+                        <span className="detalle-label">ID:</span> {detalle.ID}<br />
+                        <span className="detalle-label">Usuario:</span> {detalle.Usuario}<br />
+                        <span className="detalle-label">Operación:</span> {detalle.Operacion}<br />
+                        <span className="detalle-label">Nombre de la Tabla:</span> {detalle.Nombre_Tabla}<br />
+                        <span className="detalle-label">Id Asociado:</span> {detalle.Id_Asociado}<br />
+                        <span className="detalle-label">Detalles:</span><br />
+                        <div className="detalles-list">
+                          {detalle.Detalles && Object.entries(detalle.Detalles).map(([key, value], idx) => (
+                            <div key={idx}>
+                              {key}: {value}
+                            </div>
+                          ))}
+                        </div>
+                        <span className="detalle-label">Fecha de registro:</span> {detalle.Fecha_de_Registro}<br />
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="no-detalles">No hay detalles disponibles.</div>
+              )}
+            </>
+          ) : (
+          <div className="no-registro">Seleccione un registro para ver los detalles.</div>
+          )}
+        </div>
 
         <div className="techlogix-info">
           <img src={techlogixLogo} alt="TechLogix" />
@@ -76,54 +117,56 @@ export const RegistrosPage = () => {
           </div>
         </div>
 
-        {isModalOpen && (
-          <Modal onClose={() => setIsModalOpen(false)}>
-            <div className="search-and-order">
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Buscar..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <div className="order-buttons">
-                <button onClick={() => handleChangeOrder('asc')}>
-                  <span className="icon">🔼</span>
-                  Orden Ascendente
-                </button>
-                <button onClick={() => handleChangeOrder('desc')}>
-                  <span className="icon">🔽</span>
-                  Orden Descendente
-                </button>
+        {
+          isModalOpen && (
+            <Modal onClose={() => setIsModalOpen(false)}>
+              <div className="search-and-order">
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Buscar..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <div className="order-buttons">
+                  <button onClick={() => handleChangeOrder('asc')}>
+                    <span className="icon">🔼</span>
+                    Orden Ascendente
+                  </button>
+                  <button onClick={() => handleChangeOrder('desc')}>
+                    <span className="icon">🔽</span>
+                    Orden Descendente
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="scrollable-list">
-              <ul className="employee-list">
-                {isFetching ? (
-                  <li>Cargando registros...</li>
-                ) : errorMessage ? (
-                  <li>{errorMessage}</li>
-                ) : (
-                  filteredRegistros.length > 0 ? (
-                    filteredRegistros.map((registro) => (
-                      <li key={registro._id.$oid} className="employee-item">
-                        <span></span>
-                        {highlightMatch(`${registro.file}   | | ${registro.fecha_creacion}`, debouncedSearchTerm)}
-                        <button onClick={() => handleSelect(registro)}>Select</button>
-                      </li>
-                    ))
+              <div className="scrollable-list">
+                <ul className="employee-list">
+                  {isFetching ? (
+                    <li>Cargando registros...</li>
+                  ) : errorMessage ? (
+                    <li>{errorMessage}</li>
                   ) : (
-                    <li>No se encontraron resultados</li>
-                  )
-                )}
-              </ul>
-            </div>
-          </Modal>
-        )}
-      </div>
+                    filteredRegistros.length > 0 ? (
+                      filteredRegistros.map((registro) => (
+                        <li key={registro._id.$oid} className="employee-item">
+                          <span></span>
+                          {highlightMatch(`Archivo: ${registro.file}   | | Fecha: ${registro.fecha_creacion} | | Operacion: ${registro.data.map(d => d.Operacion).join(', ')}`, debouncedSearchTerm)}
+                          <button onClick={() => handleSelect(registro)}>Select</button>
+                        </li>
+                      ))
+                    ) : (
+                      <li>No se encontraron resultados</li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </Modal>
+          )
+        }
+      </div >
 
       <Footer />
-    </div>
+    </div >
   );
 };

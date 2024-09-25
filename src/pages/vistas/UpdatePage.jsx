@@ -14,7 +14,7 @@ const highlightMatch = (text, term) => {
   if (!term) return text;
   const regex = new RegExp(`(${term})`, 'gi');
   return text.split(regex).map((part, index) =>
-      regex.test(part) ? <strong key={index}>{part}</strong> : part
+    regex.test(part) ? <strong key={index}>{part}</strong> : part
   );
 };
 
@@ -25,6 +25,7 @@ export const UpdatePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = useState('asc');
   const [selectedUpdate, setSelectedUpdate] = useState(null);
+  const [isDataExpanded, setIsDataExpanded] = useState(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
 
@@ -43,8 +44,12 @@ export const UpdatePage = () => {
     setIsModalOpen(false);
   };
 
+  const toggleDataSection = (index) => {
+    setIsDataExpanded(isDataExpanded === index ? null : index);
+  };
+
   const filteredUpdates = updates.filter((update) =>
-  `${update.Nombre_Tabla} ${update.Fecha_de_Registro}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${update.Nombre_Tabla} ${update.Fecha_de_Registro}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   return (
@@ -60,12 +65,40 @@ export const UpdatePage = () => {
           </div>
         </div>
 
-        {selectedUpdate && (
-          <div className="json-display">
-            <h3>Detalles de la Actualización Seleccionada</h3>
-            <pre>{JSON.stringify(selectedUpdate, null, 2)}</pre>
-          </div>
-        )}
+        <div className="registro-info">
+          {selectedUpdate ? (
+            <>
+              <div><span className="detalle-label">ID:</span> {selectedUpdate._id}</div>
+              <div><span className="detalle-label">Usuario:</span> {selectedUpdate.Usuario}</div>
+              <div><span className="detalle-label">Nombre de la Tabla:</span> {selectedUpdate.Nombre_Tabla}</div>
+              <div><span className="detalle-label">Id Asociado:</span> {selectedUpdate.Id_Asociado}</div>
+              <div><span className="detalle-label">Fecha de Registro:</span> {selectedUpdate.Fecha_de_Registro}</div>
+              <strong>Cambios:</strong>
+              {selectedUpdate.Cambios && selectedUpdate.Cambios.length > 0 ? (
+                selectedUpdate.Cambios.map((cambio, index) => (
+                  <div key={index}>
+                    <button className="toggle-button" onClick={() => toggleDataSection(index)}>
+                      <strong>{isDataExpanded === index ? '▲' : '▼'} Cambio {index + 1}</strong>
+                    </button>
+                    {isDataExpanded === index && (
+                      <div className="detalle-content">
+                        <span className="detalle-label">Campo:</span> {cambio.campo}<br />
+                        <span className="detalle-label">Valor Anterior:</span> {cambio.valor_anterior}<br />
+                        <span className="detalle-label">Valor Nuevo:</span> {cambio.valor_nuevo}<br />
+                        <span className="detalle-label">ID del Cambio:</span> {cambio._id}<br />
+                        <span className="detalle-label">Fecha de registro:</span> {selectedUpdate.Fecha_de_Registro}<br />
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="no-detalles">No hay cambios disponibles.</div>
+              )}
+            </>
+          ) : (
+            <div className="no-registro">Seleccione un registro para ver los detalles.</div>
+            )}
+        </div>
 
         <div className="techlogix-info">
           <img src={techlogixLogo} alt="TechLogix" />

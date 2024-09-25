@@ -1,4 +1,4 @@
-import React ,{ useState, useEffect }from 'react';
+import React, { useState, useEffect } from 'react';
 import './dashboardPage.css';
 import buttonImage2 from '/src/assets/img/checkform.png';
 import employeeImage from '/src/assets/img/Empresas.png';
@@ -43,8 +43,8 @@ export const DashboardPage = () => {
   };
 
   const filteredEmpresas = empresas.filter((empresa) =>
-  `${empresa.Código_personal} ${empresa.Descripción_responsabilidades}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-);
+    `${empresa.Código_personal} ${empresa.Descripción_responsabilidades}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  );
 
   return (
     <main className='dashboard'>
@@ -111,19 +111,21 @@ export const DashboardPage = () => {
                   </div>
                 </div>
 
-                <ul className="employee-list">
-                  {filteredEmpresas.length > 0 ? (
-                    filteredEmpresas.map((empresa) => (
-                      <li key={empresa.Id_Asociado} className="employee-item">
-                        <span>ID: {empresa.Id_Asociado}</span>
-                        {highlightMatch(`${empresa.Código_personal} || ${empresa.Descripción_responsabilidades}`, debouncedSearchTerm)}
-                        <button onClick={() => handleSelect(empresa)}>Select</button>
-                      </li>
-                    ))
-                  ) : (
-                    <li>No se encontraron resultados</li>
-                  )}
-                </ul>
+                <div className="scrollable-list">
+                  <ul className="employee-list">
+                    {filteredEmpresas.length > 0 ? (
+                      filteredEmpresas.map((empresa) => (
+                        <li key={empresa.Id_Asociado} className="employee-item">
+                          <span>ID: {empresa.Id_Asociado}</span>
+                          {highlightMatch(`${empresa.Código_personal} || ${empresa.Descripción_responsabilidades} `, debouncedSearchTerm)}
+                          <button onClick={() => handleSelect(empresa)}>Select</button>
+                        </li>
+                      ))
+                    ) : (
+                      <li>No se encontraron resultados</li>
+                    )}
+                  </ul>
+                </div>
               </>
             )}
           </Modal>

@@ -1,5 +1,5 @@
-import React, { useState }from 'react';
-import '../dashboard/dashboardPage.css'; 
+import React, { useState } from 'react';
+import '../dashboard/dashboardPage.css';
 import buttonImage1 from '/src/assets/img/historial.png';
 import employeeImage from '/src/assets/img/login1.png';
 import techlogixLogo from '/src/assets/img/techlogix.png';
@@ -7,7 +7,7 @@ import { HeaderComp } from '../../components/navbars/Header';
 import { NavBarComp } from '../../components/navbars/Navbar';
 import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
-import { useGetLogins } from '../../shared/hooks/useGetLoginLog'; 
+import { useGetLogins } from '../../shared/hooks/useGetLoginLog';
 import { useDebounce } from '../../shared/hooks/useDebounce';
 
 const highlightMatch = (text, term) => {
@@ -57,12 +57,20 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        {selectedLogin && (
-          <div className="json-display">
-            <h3>Detalles del Login Seleccionado</h3>
-            <pre>{JSON.stringify(selectedLogin, null, 2)}</pre>
-          </div>
-        )}
+        <div className="registro-info">
+          {selectedLogin ? (
+            <>
+              <div><strong>ID:</strong> {selectedLogin._id}</div>
+              <div><strong>Usuario ID:</strong> {selectedLogin.userId}</div>
+              <div><strong>Email:</strong> {selectedLogin.email}</div>
+              <div><strong>IP Address:</strong> {selectedLogin.ipAddress}</div>
+              <div><strong>Fecha de Inicio de Sesión:</strong> {selectedLogin.loginTime}</div>
+              <div><strong>Fecha de Cierre de Sesión:</strong> {selectedLogin.logoutTime || 'Sesión no cerrada'}</div>
+            </>
+          ) : (
+            <div className="no-registro">Seleccione un registro para ver los detalles.</div>
+          )}
+        </div>
 
         <div className="techlogix-info">
           <img src={techlogixLogo} alt="TechLogix" />
