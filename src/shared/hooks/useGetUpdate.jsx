@@ -22,7 +22,6 @@ export const useGetUpdate = ({ orden = 'desc', campo = 'Nombre_Tabla' }) => {
             setIsFetching(true);
             const response = await getUpdates({ orden, campo });
 
-            console.log('Respuesta del servidor:', response); 
 
             if (response.error) {
                 throw new Error(response.e?.message || 'Error en la solicitud');
@@ -30,16 +29,14 @@ export const useGetUpdate = ({ orden = 'desc', campo = 'Nombre_Tabla' }) => {
 
             const updatesData = response.data.logupdate || [];
 
-            console.log('Datos de actualizaciones:', updatesData); 
 
             if (Array.isArray(updatesData) && updatesData.length > 0) {
                 const formattedUpdates = updatesData.map(update => ({
                     ...update,
-                    Fecha_de_Registro: formatDate(update.Fecha_de_Registro) 
+                    Fecha_de_Registro: formatDate(update.Fecha_de_Registro)
                 }));
 
                 setUpdates(formattedUpdates);
-                console.log('Actualizaciones formateadas:', formattedUpdates); 
                 toast.success('Actualizaciones cargadas exitosamente');
             } else {
                 console.warn('No se encontraron actualizaciones.');

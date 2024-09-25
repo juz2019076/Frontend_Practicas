@@ -11,14 +11,12 @@ export const useGetPersonal = ({ orden, campo }) => {
         try {
             setIsFetching(true);
             const response = await getPersonalesRequest({ orden, campo: 'primer_nombre' });
-            console.log(response);
 
             if (response.error) {
                 throw new Error(response.e.message || 'Error en la solicitud');
             }
 
             setPersonales(response.data.personal);
-            console.log(response.data.personal);
             toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los datos de personales.');

@@ -11,7 +11,6 @@ export const useGetPracticas = ({ orden, campo }) => {
         try {
             setIsFetching(true);
             const response = await getPracticasRequest({ orden, campo });
-            console.log(response);
 
             if (response.error) {
                 throw new Error(response.error.message || 'Error en la solicitud');

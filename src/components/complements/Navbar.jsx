@@ -3,6 +3,7 @@ import './navbar.css';
 import { useNavigate } from 'react-router-dom';
 
 export const Navbar = () => {
+    
     const navigate = useNavigate();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false); 

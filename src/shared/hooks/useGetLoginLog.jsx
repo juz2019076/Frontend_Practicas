@@ -18,27 +18,25 @@ export const useGetLogins = ({ orden = 'desc', campo = 'file' }) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const fetchLogins = async () => {
+
         try {
             setIsFetching(true);
             const response = await getLogins({ orden, campo });
-
-            console.log('Respuesta del servidor:', response); 
 
             if (response.error) {
                 throw new Error(response.e?.message || 'Error en la solicitud');
             }
 
             const loginsData = response.data.loglogin || [];
-            console.log('Datos de logins:', loginsData); 
 
             if (Array.isArray(loginsData) && loginsData.length > 0) {
                 const formattedLogins = loginsData.map(login => ({
                     ...login,
-                    fecha_creacion: formatDate(login.loginTime) 
+                    loginTime: formatDate(login.loginTime),
+                    logoutTime: formatDate(login.logoutTime) 
                 }));
 
                 setLogins(formattedLogins);
-                console.log('Logins formateados:', formattedLogins); 
                 toast.success('Logins cargados exitosamente');
             } else {
                 console.warn('No se encontraron registros de login.');

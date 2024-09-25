@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { UpdatePage } from './pages/vistas/UpdatePage';
 import { LoginPage } from './pages/vistas/LoginPage';
 import { RegistrosPage } from './pages/vistas/RegistrosPage';
+import { LogVistaPage } from './pages/vistas/LogVistaPage';
 
 
 const routes = [
@@ -18,7 +19,8 @@ const routes = [
   { path: '/empresa', element: <DashboardPage /> },
   { path: '/registro', element: <RegistrosPage /> },
   { path: '/logUpdate', element: <UpdatePage /> },
-  { path: '/logLogin', element: <LoginPage /> }
+  { path: '/logLogin', element: <LoginPage /> },
+  { path: '/logVista', element: <LogVistaPage />}
 
 ]
 

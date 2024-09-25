@@ -11,14 +11,12 @@ export const useGetEmpresas = ({ orden, campo }) => {
         try {
             setIsFetching(true);
             const response = await getEmpresasRequest({ orden, campo });
-            console.log(response);
 
             if (response.error) {
                 throw new Error(response.e.message || 'Error en la solicitud');
             }
 
             setEmpresas(response.data.empresa);
-            console.log(response.data.empresa);
             toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los datos de empresas.');

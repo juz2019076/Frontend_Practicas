@@ -154,3 +154,28 @@ export const getLogins = async ({ orden, campo }) => {
         };
     }
 };
+
+export const postLogVista = async (data) => {
+    try {
+        return await apiClient.post('/logVista', data);
+    } catch (e) {
+        return {
+            error: true,
+            e,
+        };
+    }
+};
+
+export const getLogVista = async ({ orden, campo }) => {
+    try {
+        const response = await apiClient.get('/logVista', {
+            params: { orden, campo }
+        });
+        return response;
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};

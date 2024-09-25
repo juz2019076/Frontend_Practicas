@@ -14,7 +14,6 @@ export const useLogin = () => {
 
         try {
             const response = await loginRequest({ email, password });
-            console.log('Respuesta completa:', response);
 
             setIsLoading(false);
 
@@ -26,10 +25,8 @@ export const useLogin = () => {
             const { token } = response.data;
 
             if (token) {
-                console.log('Guardando token en localStorage:', token); 
                 localStorage.setItem('user', JSON.stringify({ token, email }));
             } else {
-                console.log('Token no encontrado en la respuesta');
                 localStorage.removeItem('user');
             }
 
