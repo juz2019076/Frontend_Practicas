@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Logo } from "./Logo";
 import { Input } from "./Input";
 import {
   emailValidationMessage,
@@ -73,7 +72,7 @@ export const Login = ({ switchAuthHandler }) => {
           <img src="/src/assets/img/techlogix.png" alt="Logo" className="login-logo" />
         </div>
         <form>
-        <h1 class="login-title">¡Bienvenido de nuevo!</h1>
+          <h1 className="login-title">¡Bienvenido de nuevo!</h1>
           <div className="input-group">
             <Input
               field="email"
