@@ -49,15 +49,12 @@ export const PracticantesPage = () => {
             <h2>Data Security & Technology</h2>
             {/* Botones de acción */}
             <div className="action-buttons">
-              <button className="action-button">
-                <img src={buttonImage1} alt="Button 1" />
-              </button>
+             
               <button className="action-button">
                 <img src={buttonImage2} alt="Button 2" />
+                <span>Check Form</span>
               </button>
-              <button className="action-button">
-                <img src={buttonImage3} alt="Button 3" />
-              </button>
+              
             </div>
           </div>
 

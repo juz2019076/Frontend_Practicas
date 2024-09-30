@@ -50,13 +50,8 @@ export const DashboardPage = () => {
             {/* Botones de acción */}
             <div className="action-buttons">
               <button className="action-button">
-                <img src={buttonImage1} alt="Button 1" />
-              </button>
-              <button className="action-button">
-                <img src={buttonImage2} alt="Button 2" />
-              </button>
-              <button className="action-button">
-                <img src={buttonImage3} alt="Button 3" />
+                <img src={buttonImage2} alt="CheckForm" />
+                <span>Check Form</span>
               </button>
             </div>
           </div>

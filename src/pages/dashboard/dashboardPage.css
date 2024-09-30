@@ -121,7 +121,7 @@
     margin: 5px 0;
 }
 
-/* Estilos para los botones de acción */
+/* Nuevo diseño para los botones de acción con glassmorphism */
 .action-buttons {
     display: flex;
     justify-content: space-around;
@@ -130,15 +130,40 @@
 }
 
 .action-button {
-    background: transparent; /* Sin fondo */
-    border: none; /* Sin borde */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde con transparencia */
+    border-radius: 20px; /* Bordes redondeados suaves */
     cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
-    padding: 10px; /* Añadir espacio alrededor de la imagen */
+    padding: 15px;
+    text-align: center;
+    backdrop-filter: blur(10px); /* Efecto de desenfoque */
+    transition: all 0.3s ease; /* Transición suave para efectos */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.action-button:hover {
+    background: rgba(255, 255, 255, 0.4); /* Fondo más claro al pasar el mouse */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2); /* Sombra más definida en hover */
 }
 
 .action-button img {
-    width: 70px; /* Aumentar tamaño del botón */
-    height: 70px; /* Aumentar tamaño del botón */
+    width: 70px; /* Tamaño de las imágenes */
+    height: 70px;
+}
+
+.action-button span {
+    margin-top: 10px; /* Espacio entre imagen y texto */
+    font-size: 15px; /* Tamaño del texto */
+    font-weight: 500; /* Peso del texto */
+    color: #fff; /* Texto blanco */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra en el texto */
+}
+
+.action-button:active {
+    transform: scale(0.95); /* Ligeramente más pequeño cuando se presiona */
 }
 
 /* Borde gris grande debajo de los botones */
