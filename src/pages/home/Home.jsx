@@ -17,6 +17,10 @@ export const Home = () => {
                     <h1>Bienvenido!</h1>
                     <h2>TECHLOGIX</h2>
                     <p>Data Security & Technology</p>
+                    <p>En un mundo donde la información se ha convertido en uno de los activos más valiosos</p>
+                    <p>ECHLOGIX se dedica a ofrecer soluciones avanzadas en seguridad de datos y tecnología</p>
+                    <p>Nuestro objetivo es proteger su información</p>
+                    <p>Garantizar la confidencialidad de sus datos y ofrecer tecnologías innovadoras que impulsen su negocio hacia el futuro.</p>
 
                 </div>
             </div>

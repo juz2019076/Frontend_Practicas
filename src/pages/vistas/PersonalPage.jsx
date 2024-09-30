@@ -45,7 +45,7 @@ export const PersonalPage = () => {
   };
 
   const filteredPersonales = personales.filter((personal) =>
-    `${personal.primer_nombre} ${personal.primer_apellido}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${personal.Id_Asociado} ${personal.primer_nombre} ${personal.primer_apellido}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   return (

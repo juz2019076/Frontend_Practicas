@@ -8,7 +8,7 @@ export const App = () => {
   return (
     <>
       {element}
-      <Toaster position="bottom-right" reverseOrder={false} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </>
   );
 };

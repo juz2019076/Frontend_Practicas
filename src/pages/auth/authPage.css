@@ -75,7 +75,7 @@ body, html {
 
 /* Estilo para los inputs */
 .input-group input {
-  background-color: #e6e8e9; /* Fondo claro */
+  background-color: #818181e7; /* Fondo claro */
   border: none; /* Sin borde */
   border-radius: 5px; /* Bordes redondeados */
   padding: 10px; /* Espaciado interno */

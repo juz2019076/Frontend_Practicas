@@ -1,48 +1,44 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+
 
 .modal-content {
-    background-color: white;
-    padding: 20px;
-    width: 500px;
-    max-width: 90%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
+    background-color: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    /* Asegura que no se desborde en pantallas pequeñas */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    overflow-y: auto;
+    /* Permitir scroll dentro del modal */
     color: #333;
+    position: relative;
 }
 
-/* Nueva clase para la lista de empleados */
 .scrollable-list {
-    max-height: 400px;
-    /* Ajusta esta altura según lo que necesites */
+    max-height: 50vh;
     overflow-y: auto;
-    /* Habilita el scroll vertical */
+    margin-top: 10px;
 }
 
 .modal-content h3 {
     margin-top: 0;
     text-align: center;
-    color: #333;
+    font-size: 1.8rem;
+    color: #007bff;
 }
 
 .employee-item {
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
-    color: #333;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.employee-item:hover {
+    background-color: #f9f9f9;
 }
 
 .employee-item:last-child {
@@ -54,31 +50,30 @@
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 8px 12px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .employee-item button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 .search-input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 2px solid #007bff;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
     font-size: 16px;
     transition: border-color 0.3s;
 }
 
-.search-input {
-    width: 60%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.search-input:focus {
+    border-color: #0056b3;
+    outline: none;
 }
 
 .employee-list {
@@ -86,57 +81,32 @@
     padding: 0;
 }
 
-.employee-item {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.employee-item:last-child {
-    border-bottom: none;
-}
-
-.employee-item strong {
-    color: #007bff;
-}
-
-
 .order-buttons {
     display: flex;
-    /* Para colocar los botones uno al lado del otro */
-    gap: 10px;
-    /* Espacio entre los botones */
     justify-content: center;
-    /* Centrar los botones */
+    gap: 15px;
     margin-bottom: 20px;
-    /* Espacio inferior */
 }
 
 .order-buttons button {
     background-color: #007bff;
-    /* Color del botón */
     color: white;
-    /* Color del texto del botón */
     border: none;
     border-radius: 5px;
-    /* Bordes curvados del botón */
-    padding: 5px 8px;
-    /* Espaciado pequeño para que sean botones pequeños */
+    padding: 8px 12px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    /* Transición suave */
+    transition: background-color 0.3s, box-shadow 0.3s;
     font-size: 14px;
-    /* Tamaño de fuente más pequeño */
 }
 
 .order-buttons button:hover {
     background-color: #0056b3;
-    /* Color al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.order-buttons button:hover {
+    background-color: #0056b3;
 }
 
 .order-buttons .icon {
     margin-right: 5px;
-    /* Espacio entre el ícono y el texto */
 }

@@ -43,7 +43,7 @@ export const DashboardPage = () => {
   };
 
   const filteredEmpresas = empresas.filter((empresa) =>
-    `${empresa.Código_personal} ${empresa.Descripción_responsabilidades}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${empresa.Id_Asociado}${empresa.Código_personal} ${empresa.Descripción_responsabilidades}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   return (

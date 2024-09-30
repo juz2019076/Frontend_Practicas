@@ -114,7 +114,7 @@ export const LoginPage = () => {
                   filteredLogins.length > 0 ? (
                     filteredLogins.map((login) => (
                       <li key={login._id} className="employee-item">
-                        {highlightMatch(`${login.email}   | | ${login.loginTime}`, debouncedSearchTerm)}
+                        {highlightMatch(`Usuario: ${login.email}   | | Fecha de inicio: ${login.loginTime}`, debouncedSearchTerm)}
                         <button onClick={() => handleSelect(login)}>Select</button>
                       </li>
                     ))

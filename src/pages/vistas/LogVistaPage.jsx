@@ -41,7 +41,7 @@ export const LogVistaPage = () => {
   };
 
   const filteredLogins = logins.filter((login) =>
-    `${login.usuario} ${login.fecha_de_registro}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${login.usuario} ${login.fecha_de_registro} ${login.pagina}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
 
@@ -113,7 +113,7 @@ export const LogVistaPage = () => {
                   filteredLogins.length > 0 ? (
                     filteredLogins.map((login) => (
                       <li key={login._id} className="employee-item">
-                        {highlightMatch(` Usuario: ${login.usuario}   | | Fecha de activacion: ${login.fecha_de_registro}`, debouncedSearchTerm)}
+                        {highlightMatch(` Usuario: ${login.usuario}   | | Fecha de activacion: ${login.fecha_de_registro}, | | Pagina: ${login.pagina} `, debouncedSearchTerm)}
                         <button onClick={() => handleSelect(login)}>Select</button>
                       </li>
                     ))
