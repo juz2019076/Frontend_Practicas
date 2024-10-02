@@ -128,6 +128,9 @@
 .table th {
     background-color: #007bff;
     color: white;
+    position: sticky;
+    top: 0; 
+    z-index: 0;
 }
 
 .table tr:hover {
@@ -153,3 +156,4 @@
 .table .info-button:hover {
     background-color: #0056b3;
 }
+

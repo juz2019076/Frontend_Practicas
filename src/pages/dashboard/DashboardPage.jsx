@@ -131,9 +131,11 @@ export const DashboardPage = () => {
                             <td>{empresa.Código_personal}</td>
                             <td>{empresa.Cargo}</td>
                             <td>
-                              <button className="info-button" onClick={() => handleSelect(empresa)}>
-                                🔍
-                              </button>
+                              <div className='button-container'>
+                                <button className="info-button" onClick={() => handleSelect(empresa)}>
+                                  🔍
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))

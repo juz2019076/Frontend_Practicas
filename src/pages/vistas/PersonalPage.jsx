@@ -120,34 +120,36 @@ export const PersonalPage = () => {
                   </div>
                 </div>
                 <div className="table-container">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>NOMBRE</th>
-                      <th>APELLIDO</th>
-                      <th>MÁS INFORMACIÓN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredPersonales.length > 0 ? (
-                      filteredPersonales.map((personal) => (
-                        <tr key={personal.Id_Asociado}>
-                          <td>{personal.Id_Asociado}</td>
-                          <td>{personal.primer_nombre}</td>
-                          <td>{personal.primer_apellido}</td>
-                          <td>
-                            <button className="info-button" onClick={() => handleSelect(personal)}>
-                              🔍
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <li>No se encontraron resultados</li>
-                    )}
-                  </tbody>
-                </table>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>NOMBRE</th>
+                        <th>APELLIDO</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredPersonales.length > 0 ? (
+                        filteredPersonales.map((personal) => (
+                          <tr key={personal.Id_Asociado}>
+                            <td>{personal.Id_Asociado}</td>
+                            <td>{personal.primer_nombre}</td>
+                            <td>{personal.primer_apellido}</td>
+                            <td>
+                              <div className='button-container'>
+                                <button className="info-button" onClick={() => handleSelect(personal)}>
+                                  🔍
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <li>No se encontraron resultados</li>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </>
             )}
@@ -160,7 +162,7 @@ export const PersonalPage = () => {
           </div>
         )}
 
-      
+
       </div>
       <Footer />
     </main>

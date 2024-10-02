@@ -131,9 +131,11 @@ export const PracticantesPage = () => {
                             <td>{practica.Institucion_Colegio}</td>
                             <td>{practica.Carrera}</td>
                             <td>
-                              <button className="info-button" onClick={() => handleSelect(practica)}>
-                                🔍
-                              </button>
+                              <div className='button-container'>
+                                <button className="info-button" onClick={() => handleSelect(practica)}>
+                                  🔍
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))

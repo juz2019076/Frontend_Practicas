@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../dashboard/dashboardPage.css';  // Importar los estilos
+import '../dashboard/dashboardPage.css';  
 import buttonImage1 from '/src/assets/img/historial.png';
 import employeeImage from '/src/assets/img/registro.png';
 import techlogixLogo from '/src/assets/img/techlogix.png';
@@ -45,7 +45,7 @@ export const RegistrosPage = () => {
 
 
   const filteredRegistros = registros.filter((registro) =>
-    `${registro.file} ${new Date(registro.fecha_creacion).toLocaleString()}${registro.data.map(d => d.Operacion).join(', ')}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${registro.file} ${registro.fecha_creacion}${registro.data.map(d => d.Operacion).join(', ')}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   useEffect(() => {
