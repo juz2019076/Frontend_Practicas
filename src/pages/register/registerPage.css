@@ -1,55 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f4f8;
+  color: #333;
+}
+
 .upload-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('/src/assets/img/fondo.jpeg'); /* Asegúrate de que la ruta sea correcta */
+  background-image: url('/src/assets/img/fondo.jpeg');
   background-size: cover;
   background-position: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .upload-container {
-  background-color: rgba(0, 0, 0, 0.7); /* Color con transparencia */
-  padding: 2rem;
-  border-radius: 10px;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
   text-align: center;
   max-width: 400px;
   width: 100%;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #000000; /* Azul más llamativo */
+  font-weight: 600;
 }
 
 input[type="file"] {
   margin-top: 1rem;
   display: block;
   width: 100%;
+  padding: 12px;
+  border: 2px dashed #72ff89;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #0056b3;
+}
+
+button[type="submit"],
+.cancel-button {
+  margin-top: 1.5rem;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button[type="submit"] {
-  margin-top: 1rem;
-  padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #1057a3;
   color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
 }
 
 button[type="submit"]:hover {
   background-color: #0056b3;
+  transform: translateY(-3px);
 }
 
-.cancel-button {
-  margin-top: 1rem;
-  padding: 10px 20px;
+button.cancel-button {
   background-color: #f44336;
   color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
 }
 
-.cancel-button:hover {
+button.cancel-button:hover {
   background-color: #d32f2f;
+  transform: translateY(-3px);
+}
+
+button[disabled] {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+p {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.error-message {
+  color: #f44336;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  button {
+    font-size: 0.9rem;
+  }
 }

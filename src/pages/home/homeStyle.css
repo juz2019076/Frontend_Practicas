@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+    overflow-x: hidden;
+}
+
 .main-content {
     display: flex;
     flex-direction: column;
@@ -6,42 +17,109 @@
     height: 100vh;
     background-image: url('/src/assets/img/fondo.jpeg');
     background-size: cover;
-    background-position: center; 
-    padding-top: 70px; 
-    box-sizing: border-box; 
-    backdrop-filter: blur(5px);
-  }
-  
-  .welcome-message {
+    background-position: center;
+    padding-top: 70px;
+    box-sizing: border-box;
+    backdrop-filter: blur(4px);
+    position: relative;
+    overflow: hidden;
+}
+
+.main-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    animation: parallax 10s infinite;
+}
+
+@keyframes parallax {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 50%; }
+}
+
+.welcome-message {
     text-align: center;
-    color: white;
-    background: rgba(0, 0, 0, 0.5); 
-    padding: 20px;
-    border-radius: 15px; 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  }
-  
-  .welcome-message img {
-    max-width: 200px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    animation: fadeInUp 1.5s ease;
+    transition: transform 0.3s;
+}
+
+.welcome-message:hover {
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-message img {
+    max-width: 150px;
     margin-bottom: 20px;
     border-radius: 10px;
-  }
-  
-  .welcome-message h1 {
+    transition: transform 0.3s ease;
+}
+
+.welcome-message img:hover {
+    transform: rotate(360deg);
+}
+
+.welcome-message h1, .welcome-message h2 {
     font-size: 3rem;
     margin-bottom: 10px;
-  }
-  
-  .welcome-message h2 {
-    font-size: 2.5rem;
-    margin-top: 0;
+    background: none; /* Eliminamos el gradiente */
+    color: #004aad; /* Cambiamos el color a un tono azul más oscuro */
+    transition: color 0.3s ease;
+}
+
+.welcome-message h2 {
+    font-size: 2rem;
     margin-bottom: 15px;
-    text-transform: uppercase;
-  }
-  
-  .welcome-message p {
-    font-size: 1.5rem;
+    color: #007bff; /* Cambia el color del subtítulo a un tono de azul celeste */
+}
+
+.welcome-message h1:hover, .welcome-message h2:hover {
+    color: #00d4ff; /* Cambia el color a celestito cuando el mouse pase por encima */
+}
+
+.welcome-message p {
+    font-size: 1.2rem;
     line-height: 1.6;
-    max-width: 600px;
-    margin: auto;
-  }
+    color: #444;
+    margin: 15px 0;
+    animation: fadeInUp 2s ease;
+    transition: color 0.3s ease;
+}
+
+.welcome-message p:hover {
+    color: #00d4ff; /* Cambia el color del texto a celestito cuando pase el mouse por encima */
+}
+
+@media (max-width: 768px) {
+    .welcome-message h1 {
+        font-size: 2rem;
+    }
+
+    .welcome-message h2 {
+        font-size: 1.5rem;
+    }
+
+    .welcome-message p {
+        font-size: 1rem;
+    }
+}
