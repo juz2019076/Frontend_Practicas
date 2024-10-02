@@ -313,8 +313,29 @@ strong {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  .back-button:hover {
+}
+
+.back-button:hover {
     background-color: #0056b3;
+}
+
+
+.regresar-button {
+    margin-top: 20px;
+    padding: 20px 50px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.regresar-button:hover {
+    background-color: #d32f2f;
+}
+
+
+.button-container {
+    text-align: center;
   }

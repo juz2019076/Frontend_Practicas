@@ -9,15 +9,9 @@ import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
 import { useGetPersonal } from '../../shared/hooks/useGetPersonal';
 import { useDebounce } from '../../shared/hooks/useDebounce';
+import { useLogVista } from '../../shared/hooks/useLogVista';
+import { useNavigate } from 'react-router-dom';
 
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
 
 
 export const PersonalPage = () => {
@@ -29,6 +23,8 @@ export const PersonalPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
 
 
   const handleSelect = (personal) => {
@@ -48,6 +44,18 @@ export const PersonalPage = () => {
     `${personal.Id_Asociado} ${personal.primer_nombre} ${personal.primer_apellido}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
+
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
+
   return (
     <main className='dashboard'>
       <HeaderComp />
@@ -56,7 +64,7 @@ export const PersonalPage = () => {
         <div className="employees-section">
           <div className="employees-icon">
             <img src={employeeImage} alt="Empleados" />
-            <h2>PERSONALES</h2>
+            <h2>DATOS PERSONALES DEL COLABORADOR</h2>
           </div>
 
           {selectedPersonal && (
@@ -70,19 +78,18 @@ export const PersonalPage = () => {
                     readOnly
                   />
                 </div>
+
               ))}
+
+              <button className="back-button" onClick={() => {
+                setSelectedPersonal(null);
+                setIsModalOpen(true);
+              }}>
+                Regresar
+              </button>
+
             </div>
           )}
-        </div>
-
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-          <div className="action-buttons">
-            <button className="action-button" onClick={() => setIsModalOpen(true)}>
-              <img src={buttonImage2} alt="Button 2" />
-            </button>
-          </div>
         </div>
 
         {isModalOpen && (
@@ -112,26 +119,48 @@ export const PersonalPage = () => {
                     </button>
                   </div>
                 </div>
-
-                <div className="scrollable-list">
-                <ul className="employee-list">
-                  {filteredPersonales.length > 0 ? (
-                    filteredPersonales.map((personal) => (
-                      <li key={personal.Id_Asociado} className="employee-item">
-                        <span>ID: {personal.Id_Asociado}</span>
-                        {highlightMatch(`${personal.primer_nombre} ${personal.primer_apellido}`, debouncedSearchTerm)}
-                        <button onClick={() => handleSelect(personal)}>Select</button>
-                      </li>
-                    ))
-                  ) : (
-                    <li>No se encontraron resultados</li>
-                  )}
-                </ul>
+                <div className="table-container">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>NOMBRE</th>
+                      <th>APELLIDO</th>
+                      <th>MÁS INFORMACIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredPersonales.length > 0 ? (
+                      filteredPersonales.map((personal) => (
+                        <tr key={personal.Id_Asociado}>
+                          <td>{personal.Id_Asociado}</td>
+                          <td>{personal.primer_nombre}</td>
+                          <td>{personal.primer_apellido}</td>
+                          <td>
+                            <button className="info-button" onClick={() => handleSelect(personal)}>
+                              🔍
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <li>No se encontraron resultados</li>
+                    )}
+                  </tbody>
+                </table>
                 </div>
               </>
             )}
           </Modal>
         )}
+
+        {!selectedPersonal && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
+        )}
+
+      
       </div>
       <Footer />
     </main>

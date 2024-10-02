@@ -17,7 +17,6 @@ export const useGetEmpresas = ({ orden, campo }) => {
             }
 
             setEmpresas(response.data.empresa);
-            toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los datos de empresas.');
             toast.error(error.message || 'Error al obtener los datos');

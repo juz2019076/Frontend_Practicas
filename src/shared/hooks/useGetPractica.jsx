@@ -17,7 +17,6 @@ export const useGetPracticas = ({ orden, campo }) => {
             }
 
             setPracticas(response.practicas || []); 
-            toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los datos de prácticas.');
             toast.error(error.message || 'Error al obtener los datos');

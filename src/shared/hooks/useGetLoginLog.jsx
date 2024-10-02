@@ -37,7 +37,6 @@ export const useGetLogins = ({ orden = 'desc', campo = 'file' }) => {
                 }));
 
                 setLogins(formattedLogins);
-                toast.success('Logins cargados exitosamente');
             } else {
                 console.warn('No se encontraron registros de login.');
                 setLogins([]);

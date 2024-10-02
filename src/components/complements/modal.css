@@ -1,25 +1,18 @@
-
-
 .modal-content {
     background-color: #fff;
     padding: 30px;
     width: 90%;
     max-width: 600px;
-    max-height: 85vh;
-    /* Asegura que no se desborde en pantallas pequeñas */
+    max-height: 70vh;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
-    overflow-y: auto;
-    /* Permitir scroll dentro del modal */
+    overflow-y: hidden;
     color: #333;
     position: relative;
+    margin-left: 10px;
 }
 
-.scrollable-list {
-    max-height: 50vh;
-    overflow-y: auto;
-    margin-top: 10px;
-}
+
 
 .modal-content h3 {
     margin-top: 0;
@@ -103,10 +96,60 @@
     background-color: #0056b3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .order-buttons button:hover {
     background-color: #0056b3;
 }
 
 .order-buttons .icon {
     margin-right: 5px;
+}
+
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.table th, .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.table .info-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.table .button-container {
+    text-align: center;
+
+}
+
+.table .info-button:hover {
+    background-color: #0056b3;
 }

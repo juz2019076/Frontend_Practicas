@@ -40,7 +40,6 @@ export const useGetRegistros = ({ orden, campo }) => {
 
 
             setRegistros(registrosFormateados);
-            toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los registros.');
             toast.error(error.message || 'Error al obtener los datos');

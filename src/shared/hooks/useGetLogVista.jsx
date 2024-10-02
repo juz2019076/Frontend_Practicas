@@ -34,7 +34,6 @@ export const useLogVista = ({ orden, campo }) => {
                         fecha_de_registro: formatDate(login.fecha_de_registro) // Formatea la fecha
                     }));
                     setLogins(formattedLogins);
-                    toast.success('Logs de vista cargados exitosamente');
                 } else {
                     console.warn('No se encontraron registros de login.');
                     setLogins([]);

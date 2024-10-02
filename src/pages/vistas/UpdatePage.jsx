@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../dashboard/dashboardPage.css';  // Importar los estilos
 import buttonImage1 from '/src/assets/img/historial.png';
 import employeeImage from '/src/assets/img/update.png';
@@ -9,14 +9,8 @@ import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
 import { useGetUpdate } from '../../shared/hooks/useGetUpdate';
 import { useDebounce } from '../../shared/hooks/useDebounce';
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
+import { useNavigate } from 'react-router-dom';
+import { useLogVista } from '../../shared/hooks/useLogVista';
 
 
 export const UpdatePage = () => {
@@ -25,8 +19,10 @@ export const UpdatePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = useState('asc');
   const [selectedUpdate, setSelectedUpdate] = useState(null);
-  const [isDataExpanded, setIsDataExpanded] = useState(null);
+  const [isAllDataExpanded, setIsAllDataExpanded] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
 
 
   const { updates, isFetching, errorMessage } = useGetUpdate({ orden: order, campo: 'Nombre_Tabla' });
@@ -44,13 +40,26 @@ export const UpdatePage = () => {
     setIsModalOpen(false);
   };
 
-  const toggleDataSection = (index) => {
-    setIsDataExpanded(isDataExpanded === index ? null : index);
+  const toggleAllSections = () => {
+    setIsAllDataExpanded(!isAllDataExpanded);
   };
 
   const filteredUpdates = updates.filter((update) =>
     `${update.Nombre_Tabla} ${update.Fecha_de_Registro}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
+
+
 
   return (
     <div className="dashboard">
@@ -65,95 +74,113 @@ export const UpdatePage = () => {
           </div>
         </div>
 
-        <div className="registro-info">
-          {selectedUpdate ? (
+        {selectedUpdate && (
+          <div className="registro-info">
             <>
               <div><span className="detalle-label">ID:</span> {selectedUpdate._id}</div>
               <div><span className="detalle-label">Usuario:</span> {selectedUpdate.Usuario}</div>
               <div><span className="detalle-label">Nombre de la Tabla:</span> {selectedUpdate.Nombre_Tabla}</div>
               <div><span className="detalle-label">Id Asociado:</span> {selectedUpdate.Id_Asociado}</div>
               <div><span className="detalle-label">Fecha de Registro:</span> {selectedUpdate.Fecha_de_Registro}</div>
-              <strong>Cambios:</strong>
-              {selectedUpdate.Cambios && selectedUpdate.Cambios.length > 0 ? (
-                selectedUpdate.Cambios.map((cambio, index) => (
-                  <div key={index}>
-                    <button className="toggle-button" onClick={() => toggleDataSection(index)}>
-                      <strong>{isDataExpanded === index ? '▲' : '▼'} Cambio {index + 1}</strong>
-                    </button>
-                    {isDataExpanded === index && (
-                      <div className="detalle-content">
-                        <span className="detalle-label">Campo:</span> {cambio.campo}<br />
-                        <span className="detalle-label">Valor Anterior:</span> {cambio.valor_anterior}<br />
-                        <span className="detalle-label">Valor Nuevo:</span> {cambio.valor_nuevo}<br />
-                        <span className="detalle-label">ID del Cambio:</span> {cambio._id}<br />
-                        <span className="detalle-label">Fecha de registro:</span> {selectedUpdate.Fecha_de_Registro}<br />
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="no-detalles">No hay cambios disponibles.</div>
+
+              <button className="toggle-button" onClick={() => toggleAllSections()}>
+                <strong>{isAllDataExpanded ? '▲ Ocultar todos los detalles' : '▼ Mostrar todos los detalles'}</strong>
+              </button>
+
+              {isAllDataExpanded && selectedUpdate.Cambios && selectedUpdate.Cambios.length > 0 && (
+                <div className="detalle-content">
+                  {selectedUpdate.Cambios.map((cambio, index) => (
+                    <div key={index}>
+                      <span className="detalle-label">Cambio {index + 1}</span><br />
+                      <span className="detalle-label">Campo:</span> {cambio.campo}<br />
+                      <span className="detalle-label">Valor Anterior:</span> {cambio.valor_anterior}<br />
+                      <span className="detalle-label">Valor Nuevo:</span> {cambio.valor_nuevo}<br />
+                      <span className="detalle-label">ID del Cambio:</span> {cambio._id}<br />
+                      <hr style={{ marginTop: '10px', borderTop: '1px solid #ccc' }} />
+                   </div>
+                  ))}
+                </div>
               )}
-            </>
-          ) : (
-            <div className="no-registro">Seleccione un registro para ver los detalles.</div>
-            )}
-        </div>
 
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-          <div className="action-buttons">
-            <button className="action-button" onClick={() => setIsModalOpen(true)}>
-              <img src={buttonImage1} alt="Mostrar Actualización" />
-            </button>
-          </div>
-        </div>
-
-        {isModalOpen && (
-          <Modal onClose={() => setIsModalOpen(false)}>
-            <div className="search-and-order">
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Buscar..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <div className="order-buttons">
-                <button onClick={() => handleChangeOrder('asc')}>
-                  <span className="icon">🔼</span>
-                  Orden Ascendente
-                </button>
-                <button onClick={() => handleChangeOrder('desc')}>
-                  <span className="icon">🔽</span>
-                  Orden Descendente
+              <div className="button-container">
+                <button className="back-button" onClick={() => {
+                  setSelectedUpdate(null);
+                  setIsModalOpen(true);
+                }}>
+                  Regresar
                 </button>
               </div>
-            </div>
-
-            <div className="scrollable-list">
-              <ul className="employee-list">
-                {isFetching ? (
-                  <li>Cargando actualizaciones...</li>
-                ) : errorMessage ? (
-                  <li>{errorMessage}</li>
-                ) : (
-                  filteredUpdates.length > 0 ? (
-                    filteredUpdates.map((update) => (
-                      <li key={update._id} className="employee-item">
-                        <span> {update.Usuario}   </span>
-                        {highlightMatch(`${update.Nombre_Tabla}   | | ${update.Fecha_de_Registro}`, debouncedSearchTerm)}
-                        <button onClick={() => handleSelect(update)}>Select</button>
-                      </li>
-                    ))
-                  ) : (
-                    <li>No se encontraron resultados</li>
-                  )
-                )}
-              </ul>
-            </div>
+            </>
+          </div>
+        )}
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            {isFetching ? (
+              <p>Cargando datos...</p>
+            ) : errorMessage ? (
+              <p>Error: {error}</p>
+            ) : (
+              <>
+                <div className="search-and-order">
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <div className="order-buttons">
+                    <button onClick={() => handleChangeOrder('asc')}>
+                      <span className="icon">🔼</span>
+                      Orden Ascendente
+                    </button>
+                    <button onClick={() => handleChangeOrder('desc')}>
+                      <span className="icon">🔽</span>
+                      Orden Descendente
+                    </button>
+                  </div>
+                </div>
+                <div className="table-container">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>TABLA MODIFICADA</th>
+                        <th>FECHA DE LA MODIFICACION</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredUpdates.length > 0 ? (
+                        filteredUpdates.map((update) => (
+                          <tr key={update._id}>
+                            <td>{update.Nombre_Tabla}</td>
+                            <td>{update.Fecha_de_Registro}</td>
+                            <td>
+                              <div className='button-container'>
+                                <button className="info-button" onClick={() => handleSelect(update)}>
+                                  🔍
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No se encontraron resultados</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
           </Modal>
+        )}
+
+        {!selectedUpdate && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
         )}
       </div>
 

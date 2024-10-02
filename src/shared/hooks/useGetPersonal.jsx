@@ -17,7 +17,6 @@ export const useGetPersonal = ({ orden, campo }) => {
             }
 
             setPersonales(response.data.personal);
-            toast.success('Datos cargados exitosamente');
         } catch (error) {
             setErrorMessage('Error al obtener los datos de personales.');
             toast.error(error.message || 'Error al obtener los datos');

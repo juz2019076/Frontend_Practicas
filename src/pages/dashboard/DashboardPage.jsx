@@ -9,14 +9,8 @@ import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
 import { useDebounce } from '../../shared/hooks/useDebounce';
 import { useGetEmpresas } from '../../shared/hooks/useGetEmpresa';
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
+import { useLogVista } from '../../shared/hooks/useLogVista';
+import { useNavigate } from 'react-router-dom';
 
 
 export const DashboardPage = () => {
@@ -28,6 +22,8 @@ export const DashboardPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
 
   const handleSelect = (empresa) => {
     setSelectedEmpresa(empresa);
@@ -46,6 +42,17 @@ export const DashboardPage = () => {
     `${empresa.Id_Asociado}${empresa.Código_personal} ${empresa.Descripción_responsabilidades}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
+
   return (
     <main className='dashboard'>
       <HeaderComp />
@@ -54,7 +61,7 @@ export const DashboardPage = () => {
         <div className="employees-section">
           <div className="employees-icon">
             <img src={employeeImage} alt="Empresas" />
-            <h2>EMPRESAS</h2>
+            <h2>DATOS EMPRESARIALES DEL COLABORADOR</h2>
           </div>
 
           {selectedEmpresa && (
@@ -69,18 +76,15 @@ export const DashboardPage = () => {
                   />
                 </div>
               ))}
+
+              <button className="back-button" onClick={() => {
+                setSelectedEmpresa(null);
+                setIsModalOpen(true);
+              }}>
+                Regresar
+              </button>
             </div>
           )}
-        </div>
-
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-          <div className="action-buttons">
-            <button className="action-button" onClick={() => setIsModalOpen(true)}>
-              <img src={buttonImage2} alt="Button 2" />
-            </button>
-          </div>
         </div>
 
         {isModalOpen && (
@@ -110,26 +114,48 @@ export const DashboardPage = () => {
                     </button>
                   </div>
                 </div>
+                <div className="table-container">
 
-                <div className="scrollable-list">
-                  <ul className="employee-list">
-                    {filteredEmpresas.length > 0 ? (
-                      filteredEmpresas.map((empresa) => (
-                        <li key={empresa.Id_Asociado} className="employee-item">
-                          <span>ID: {empresa.Id_Asociado}</span>
-                          {highlightMatch(`${empresa.Código_personal} || ${empresa.Descripción_responsabilidades} `, debouncedSearchTerm)}
-                          <button onClick={() => handleSelect(empresa)}>Select</button>
-                        </li>
-                      ))
-                    ) : (
-                      <li>No se encontraron resultados</li>
-                    )}
-                  </ul>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>CODIGO PERSONAL</th>
+                        <th>CARGO</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredEmpresas.length > 0 ? (
+                        filteredEmpresas.map((empresa) => (
+                          <tr key={empresa.Id_Asociado}>
+                            <td>{empresa.Código_personal}</td>
+                            <td>{empresa.Cargo}</td>
+                            <td>
+                              <button className="info-button" onClick={() => handleSelect(empresa)}>
+                                🔍
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No se encontraron resultados</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </>
             )}
           </Modal>
         )}
+        {!selectedEmpresa && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
+        )}
+
+
       </div>
       <Footer />
     </main>

@@ -33,7 +33,6 @@ export const useRegister = () => {
         throw new Error('Error al subir el archivo');
       }
 
-      toast.success('Archivo subido exitosamente');
       setFile(null); 
     } catch (error) {
       setErrorMessage('Hubo un error al subir el archivo. Inténtalo de nuevo.');

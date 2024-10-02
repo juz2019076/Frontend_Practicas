@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../dashboard/dashboardPage.css';
 import buttonImage1 from '/src/assets/img/historial.png';
 import employeeImage from '/src/assets/img/login1.png';
@@ -9,14 +9,8 @@ import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
 import { useGetLogins } from '../../shared/hooks/useGetLoginLog';
 import { useDebounce } from '../../shared/hooks/useDebounce';
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
+import { useNavigate } from 'react-router-dom';
+import { useLogVista } from '../../shared/hooks/useLogVista';
 
 export const LoginPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +18,10 @@ export const LoginPage = () => {
   const [order, setOrder] = useState('asc');
   const [selectedLogin, setSelectedLogin] = useState(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
+
+
 
   const { logins, isFetching, errorMessage } = useGetLogins({ orden: order, campo: 'email' });
 
@@ -44,6 +42,17 @@ export const LoginPage = () => {
     `${login.email} ${login.loginTime}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
+
   return (
     <div className="dashboard">
       <HeaderComp />
@@ -57,8 +66,9 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <div className="registro-info">
-          {selectedLogin ? (
+
+        {selectedLogin && (
+          <div className="registro-info">
             <>
               <div><strong>ID:</strong> {selectedLogin._id}</div>
               <div><strong>Usuario ID:</strong> {selectedLogin.userId}</div>
@@ -66,67 +76,95 @@ export const LoginPage = () => {
               <div><strong>IP Address:</strong> {selectedLogin.ipAddress}</div>
               <div><strong>Fecha de Inicio de Sesión:</strong> {selectedLogin.loginTime}</div>
               <div><strong>Fecha de Cierre de Sesión:</strong> {selectedLogin.logoutTime || 'Sesión no cerrada'}</div>
-            </>
-          ) : (
-            <div className="no-registro">Seleccione un registro para ver los detalles.</div>
-          )}
-        </div>
 
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-          <div className="action-buttons">
-            <button className="action-button" onClick={() => setIsModalOpen(true)}>
-              <img src={buttonImage1} alt="Mostrar Log Login" />
-            </button>
+              <div className='button-container'>
+                <button className="back-button" onClick={() => {
+                  setSelectedLogin(null);
+                  setIsModalOpen(true);
+                }}>
+                  Regresar
+                </button>
+              </div>
+
+
+            </>
           </div>
-        </div>
+
+        )}
 
         {isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
-            <div className="search-and-order">
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Buscar..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <div className="order-buttons">
-                <button onClick={() => handleChangeOrder('asc')}>
-                  <span className="icon">🔼</span>
-                  Orden Ascendente
-                </button>
-                <button onClick={() => handleChangeOrder('desc')}>
-                  <span className="icon">🔽</span>
-                  Orden Descendente
-                </button>
-              </div>
-            </div>
+            {isFetching ? (
+              <p>Cargando datos...</p>
+            ) : errorMessage ? (
+              <p>Error: {error}</p>
+            ) : (
+              <>
+                <div className="search-and-order">
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <div className="order-buttons">
+                    <button onClick={() => handleChangeOrder('asc')}>
+                      <span className="icon">🔼</span>
+                      Orden Ascendente
+                    </button>
+                    <button onClick={() => handleChangeOrder('desc')}>
+                      <span className="icon">🔽</span>
+                      Orden Descendente
+                    </button>
+                  </div>
+                </div>
+                <div className="table-container">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>USUARIO</th>
+                        <th>FECHA DE LOGEO</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredLogins.length > 0 ? (
+                        filteredLogins.map((login) => (
+                          <tr key={login._id}>
+                            <td>{login.email}</td>
+                            <td>{login.loginTime}</td>
+                            <td>
+                              <div className='button-container'>
 
-            <div className="scrollable-list">
-              <ul className="employee-list">
-                {isFetching ? (
-                  <li>Cargando registros de login...</li>
-                ) : errorMessage ? (
-                  <li>{errorMessage}</li>
-                ) : (
-                  filteredLogins.length > 0 ? (
-                    filteredLogins.map((login) => (
-                      <li key={login._id} className="employee-item">
-                        {highlightMatch(`Usuario: ${login.email}   | | Fecha de inicio: ${login.loginTime}`, debouncedSearchTerm)}
-                        <button onClick={() => handleSelect(login)}>Select</button>
-                      </li>
-                    ))
-                  ) : (
-                    <li>No se encontraron resultados</li>
-                  )
-                )}
-              </ul>
-            </div>
+                                <button className="info-button" onClick={() => handleSelect(login)}>
+                                  🔍
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No se encontraron resultados</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
           </Modal>
         )}
-      </div>
+
+        {!selectedLogin && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
+        )}
+
+      </div >
+
       <Footer />
     </div>
   );

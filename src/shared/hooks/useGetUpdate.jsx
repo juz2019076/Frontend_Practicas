@@ -37,7 +37,6 @@ export const useGetUpdate = ({ orden = 'desc', campo = 'Nombre_Tabla' }) => {
                 }));
 
                 setUpdates(formattedUpdates);
-                toast.success('Actualizaciones cargadas exitosamente');
             } else {
                 console.warn('No se encontraron actualizaciones.');
                 setUpdates([]);

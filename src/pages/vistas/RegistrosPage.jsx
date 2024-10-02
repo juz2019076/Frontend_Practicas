@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../dashboard/dashboardPage.css';  // Importar los estilos
 import buttonImage1 from '/src/assets/img/historial.png';
 import employeeImage from '/src/assets/img/registro.png';
@@ -9,14 +9,8 @@ import { Footer } from '../../components/complements/Footer';
 import { Modal } from '../../components/complements/Modal';
 import { useGetRegistros } from '../../shared/hooks/useGetRegistro';
 import { useDebounce } from '../../shared/hooks/useDebounce';
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
+import { useLogVista } from '../../shared/hooks/useLogVista';
+import { useNavigate } from 'react-router-dom';
 
 export const RegistrosPage = () => {
 
@@ -24,8 +18,10 @@ export const RegistrosPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = useState('asc');
   const [selectedRegistro, setSelectedRegistro] = useState(null);
-  const [isDataExpanded, setIsDataExpanded] = useState(null); 
+  const [isDataExpanded, setIsDataExpanded] = useState(0);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
 
 
   const { registros, isFetching, errorMessage } = useGetRegistros({ orden: order, campo: 'file' });
@@ -40,7 +36,6 @@ export const RegistrosPage = () => {
 
   const handleSelect = (registro) => {
     setSelectedRegistro(registro);
-    console.log("Registro seleccionado:", registro);
     setIsModalOpen(false);
   };
 
@@ -52,6 +47,17 @@ export const RegistrosPage = () => {
   const filteredRegistros = registros.filter((registro) =>
     `${registro.file} ${new Date(registro.fecha_creacion).toLocaleString()}${registro.data.map(d => d.Operacion).join(', ')}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
 
   return (
     <div className="dashboard">
@@ -66,8 +72,9 @@ export const RegistrosPage = () => {
           </div>
         </div>
 
-        <div className="registro-info">
-          {selectedRegistro ? (
+
+        {selectedRegistro && (
+          <div className="registro-info">
             <>
               <div><span className="detalle-label">ID:</span> {selectedRegistro._id}</div>
               <div><span className="detalle-label">Fecha de creación:</span> {selectedRegistro.fecha_creacion}</div>
@@ -101,69 +108,93 @@ export const RegistrosPage = () => {
               ) : (
                 <div className="no-detalles">No hay detalles disponibles.</div>
               )}
+
+              <div className='button-container'>
+                <button className="back-button" onClick={() => {
+                  setSelectedRegistro(null);
+                  setIsModalOpen(true);
+                }}>
+                  Regresar
+                </button>
+              </div>
+
             </>
-          ) : (
-          <div className="no-registro">Seleccione un registro para ver los detalles.</div>
-          )}
-        </div>
-
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-          <div className="action-buttons">
-            <button className="action-button" onClick={() => setIsModalOpen(true)}>
-              <img src={buttonImage1} alt="Mostrar Registro" />
-            </button>
           </div>
-        </div>
+        )}
 
-        {
-          isModalOpen && (
-            <Modal onClose={() => setIsModalOpen(false)}>
-              <div className="search-and-order">
-                <input
-                  type="text"
-                  className="search-input"
-                  placeholder="Buscar..."
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <div className="order-buttons">
-                  <button onClick={() => handleChangeOrder('asc')}>
-                    <span className="icon">🔼</span>
-                    Orden Ascendente
-                  </button>
-                  <button onClick={() => handleChangeOrder('desc')}>
-                    <span className="icon">🔽</span>
-                    Orden Descendente
-                  </button>
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            {isFetching ? (
+              <p>Cargando datos...</p>
+            ) : errorMessage ? (
+              <p>Error: {error}</p>
+            ) : (
+              <>
+                <div className="search-and-order">
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Buscar..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                  <div className="order-buttons">
+                    <button onClick={() => handleChangeOrder('asc')}>
+                      <span className="icon">🔼</span>
+                      Orden Ascendente
+                    </button>
+                    <button onClick={() => handleChangeOrder('desc')}>
+                      <span className="icon">🔽</span>
+                      Orden Descendente
+                    </button>
+                  </div>
                 </div>
-              </div>
+                <div className="table-container">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>FILE</th>
+                        <th>OPERACION</th>
+                        <th>FECHA DE REGISTRO</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRegistros.length > 0 ? (
+                        filteredRegistros.map((registro) => (
+                          <tr key={registro._id}>
+                            <td>{registro.file}</td>
+                            <td>{registro.data.map(d => d.Operacion).join(', ')}</td>
+                            <td>{registro.fecha_creacion}</td>
+                            <td>
+                            <div className='button-container'>
 
-              <div className="scrollable-list">
-                <ul className="employee-list">
-                  {isFetching ? (
-                    <li>Cargando registros...</li>
-                  ) : errorMessage ? (
-                    <li>{errorMessage}</li>
-                  ) : (
-                    filteredRegistros.length > 0 ? (
-                      filteredRegistros.map((registro) => (
-                        <li key={registro._id.$oid} className="employee-item">
-                          <span></span>
-                          {highlightMatch(`Archivo: ${registro.file}   | | Fecha: ${registro.fecha_creacion} | | Operacion: ${registro.data.map(d => d.Operacion).join(', ')}`, debouncedSearchTerm)}
-                          <button onClick={() => handleSelect(registro)}>Select</button>
-                        </li>
-                      ))
-                    ) : (
-                      <li>No se encontraron resultados</li>
-                    )
-                  )}
-                </ul>
-              </div>
-            </Modal>
-          )
-        }
+                              <button className="info-button" onClick={() => handleSelect(registro)}>
+                                🔍
+                              </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No se encontraron resultados</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </Modal>
+        )}
+
+        {!selectedRegistro && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
+        )}
+
       </div >
 
       <Footer />

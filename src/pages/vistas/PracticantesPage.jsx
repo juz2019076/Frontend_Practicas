@@ -8,15 +8,9 @@ import { HeaderComp } from '../../components/navbars/Header';
 import { Modal } from '../../components/complements/Modal';
 import { useGetPracticas } from '../../shared/hooks/useGetPractica';
 import { useDebounce } from '../../shared/hooks/useDebounce';
+import { useNavigate } from 'react-router-dom';
+import { useLogVista } from '../../shared/hooks/useLogVista';
 
-
-const highlightMatch = (text, term) => {
-  if (!term) return text;
-  const regex = new RegExp(`(${term})`, 'gi');
-  return text.split(regex).map((part, index) =>
-    regex.test(part) ? <strong key={index}>{part}</strong> : part
-  );
-};
 
 export const PracticantesPage = () => {
   const [orden, setOrden] = useState('asc');
@@ -26,6 +20,8 @@ export const PracticantesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const navigate = useNavigate();
+  const { logVista } = useLogVista();
 
   const handleSelect = (practica) => {
     setSelectedPractica(practica);
@@ -48,6 +44,13 @@ export const PracticantesPage = () => {
     setIsModalOpen(true);
   }, []);
 
+  const handleBackButton = async () => {
+    const userDetails = localStorage.getItem('user');
+    const usuario = userDetails ? JSON.parse(userDetails).email : 'Desconocido';
+    await logVista(usuario, '/home');
+    navigate('/home');
+  };
+
   return (
     <main className='dashboard'>
       <HeaderComp />
@@ -56,7 +59,7 @@ export const PracticantesPage = () => {
         <div className="employees-section">
           <div className="employees-icon">
             <img src={employeeImage} alt="Empleados" />
-            <h2>PRACTICAS</h2>
+            <h2>SOLICTUDES PRACTICAS</h2>
           </div>
 
           {selectedPractica && (
@@ -71,7 +74,7 @@ export const PracticantesPage = () => {
                   />
                 </div>
               ))}
-              
+
               <button className="back-button" onClick={() => {
                 setSelectedPractica(null);
                 setIsModalOpen(true);
@@ -82,7 +85,6 @@ export const PracticantesPage = () => {
           )}
 
         </div>
-
 
         {isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
@@ -111,32 +113,47 @@ export const PracticantesPage = () => {
                     </button>
                   </div>
                 </div>
-
-                <div className="scrollable-list">
-                  <ul className="employee-list">
-                    {filteredPracticas.length > 0 ? (
-                      filteredPracticas.map((practica) => (
-                        <li key={practica.Id_Asociado} className="employee-item">
-                          <span>ID: {practica.Id_Asociado}</span>
-                          {highlightMatch(`${practica.Institucion_Colegio} || ${practica.Carrera}`, debouncedSearchTerm)}
-                          <button onClick={() => handleSelect(practica)}>Select</button>
-                        </li>
-                      ))
-                    ) : (
-                      <li>No se encontraron resultados</li>
-                    )}
-                  </ul>
+                <div className="table-container">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>COLEGIO</th>
+                        <th>CARRERA</th>
+                        <th>MÁS INFORMACIÓN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredPracticas.length > 0 ? (
+                        filteredPracticas.map((practica) => (
+                          <tr key={practica.Id_Asociado}>
+                            <td>{practica.Id_Asociado}</td>
+                            <td>{practica.Institucion_Colegio}</td>
+                            <td>{practica.Carrera}</td>
+                            <td>
+                              <button className="info-button" onClick={() => handleSelect(practica)}>
+                                🔍
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No se encontraron resultados</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
               </>
             )}
           </Modal>
-
         )}
-
-        <div className="techlogix-info">
-          <img src={techlogixLogo} alt="TechLogix" />
-          <h2>Data Security & Technology</h2>
-        </div>
+        {!selectedPractica && (
+          <div>
+            <button className='regresar-button' onClick={handleBackButton}>Salir</button>
+          </div>
+        )}
 
       </div>
       <Footer />
