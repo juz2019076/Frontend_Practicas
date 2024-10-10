@@ -37,7 +37,7 @@ export const PracticantesPage = () => {
   };
 
   const filteredPracticas = practicas.filter((practica) =>
-    `${practica.Id_Asociado}${practica.Institucion_Colegio} ${practica.Carrera}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    `${practica.ID_Practicante}${practica.Institucion_Colegio} ${practica.Carrera}`.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -126,8 +126,8 @@ export const PracticantesPage = () => {
                     <tbody>
                       {filteredPracticas.length > 0 ? (
                         filteredPracticas.map((practica) => (
-                          <tr key={practica.Id_Asociado}>
-                            <td>{practica.Id_Asociado}</td>
+                          <tr key={practica._id}>
+                            <td>{practica.ID_Practicante}</td>
                             <td>{practica.Institucion_Colegio}</td>
                             <td>{practica.Carrera}</td>
                             <td>

@@ -66,7 +66,7 @@ export const DashboardPage = () => {
 
           {selectedEmpresa && (
             <div className="employee-details">
-              {['Id_Asociado', 'Código_personal', 'Fecha_contratación', 'Fecha_cargo', 'Cargo', 'Sueldo', 'Descripción_responsabilidades', 'Personal_cargo', 'Jefe_inmediato', 'Estado'].map((field, index) => (
+              {['Id_empleado', 'Codigo_personal', 'Fecha_contratacion', 'Fecha_cargo', 'Cargo', 'Sueldo', 'Descripcion_responsabilidades', 'Personal_cargo', 'Jefe_inmediato', 'Estado'].map((field, index) => (
                 <div className="employee-field" key={index}>
                   <label>{field}</label>
                   <input
@@ -127,8 +127,8 @@ export const DashboardPage = () => {
                     <tbody>
                       {filteredEmpresas.length > 0 ? (
                         filteredEmpresas.map((empresa) => (
-                          <tr key={empresa.Id_Asociado}>
-                            <td>{empresa.Código_personal}</td>
+                          <tr key={empresa._Id}>
+                            <td>{empresa.Codigo_personal}</td>
                             <td>{empresa.Cargo}</td>
                             <td>
                               <div className='button-container'>

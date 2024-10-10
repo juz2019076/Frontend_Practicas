@@ -69,7 +69,7 @@ export const PersonalPage = () => {
 
           {selectedPersonal && (
             <div className="employee-details">
-              {['primer_nombre', 'segundo_nombre', 'tercer_nombre', 'primer_apellido', 'segundo_apellido', 'apellido_de_casada', 'fecha_de_nac', 'lugar_de_nac', 'direccion_domicilio', 'numero_celular', 'numero_casa', 'correo_electronico'].map((field, index) => (
+              {['Primer_Nombre', 'Segundo_Nombre', 'Tercer_Nombre', 'Primer_Apellido', 'Segundo_Apellido', 'Apellido_de_Casada', 'Fecha_de_Nac', 'Lugar_de_Nac', 'Direccion_De_Domicilio', 'numero_celular', 'Numero_De_Celular', 'Correo_Electronico'].map((field, index) => (
                 <div className="employee-field" key={index}>
                   <label>{field}</label>
                   <input
@@ -134,8 +134,8 @@ export const PersonalPage = () => {
                         filteredPersonales.map((personal) => (
                           <tr key={personal.Id_Asociado}>
                             <td>{personal.Id_Asociado}</td>
-                            <td>{personal.primer_nombre}</td>
-                            <td>{personal.primer_apellido}</td>
+                            <td>{personal.Primer_Nombre}</td>
+                            <td>{personal.Primer_Apellido}</td>
                             <td>
                               <div className='button-container'>
                                 <button className="info-button" onClick={() => handleSelect(personal)}>
